@@ -1,5 +1,5 @@
 # my-little-blockchain-python
-
+[![Build Status](https://app.travis-ci.com/UnderABloodySky/my-little-blockchain-python.svg?branch=main)](https://app.travis-ci.com/UnderABloodySky/my-little-blockchain-python)
 
 This project requires to have pipenv installed. You can check if you have it by throwing this in a terminal:
 
