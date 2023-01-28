@@ -27,4 +27,10 @@ cd my-little-blockchain-python
 $ pipenv install
 $ pipenv shell
 ```
+If you want to see the incremental growth of this project, the order of the branches is:
 
+	1. main (Result)
+	2. blueprint
+	3. new_transaction
+	4. new_block
+	5. proof_of_work
