@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-# Our Blockchain class is responsible for managing the chain. 
-# It will store transactions and have some helper methods for adding new blocks to the chain. 
-=======
+
     # Our Blockchain class is responsible for managing the chain. 
     # It will store transactions and have some helper methods for adding new blocks to the chain. 
->>>>>>> 9a2cabd645cbeaf23e15b67181e2148a391704c4
-
 
 class Blockchain(object):
     def __init__(self):
@@ -30,7 +25,6 @@ class Blockchain(object):
         # Returns the last Block in the chain
         pass
 
-<<<<<<< HEAD
 # After new_transaction() adds a transaction to the list.
 # It returns the index of the block which the transaction will be added to—the next one to be mined. 
 # This will be useful later on, to the user submitting the transaction.
@@ -42,6 +36,7 @@ class Blockchain(object):
         # :param recipient: <str> Address of the Recipient
         # :param amount: <int> Amount
         # :return: <int> The index of the Block that will hold this transaction
+
         
         transaction = {
             'sender': sender,
@@ -50,7 +45,4 @@ class Blockchain(object):
         }
 
         self.current_transactions.append(transaction)
-
         return self.last_block['index'] + 1
-=======
->>>>>>> 9a2cabd645cbeaf23e15b67181e2148a391704c4
