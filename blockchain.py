@@ -88,3 +88,39 @@ class Blockchain(object):
 # Understanding Proof of Work: A Proof of Work algorithm (PoW) is how new Blocks are created or mined on the blockchain. 
 # The goal of PoW is to discover a number which solves a problem. The number must be difficult to find but easy to verify—computationally speaking—by anyone on the network. 
 # This is the core idea behind Proof of Work.
+# A Proof of Work algorithm (PoW) is how new Blocks are created or mined on the blockchain. 
+# The goal of PoW is to discover a number which solves a problem. 
+# The number must be difficult to find but easy to verify—computationally speaking—by anyone on the network. 
+# This is the core idea behind Proof of Work.
+# Let’s implement a similar algorithm for our blockchain. Our rule will be similar to the example above:
+
+#      <  Find a number p that when hashed with the previous block’s solution a hash with 4 leading 0s is produced.  >
+
+    def proof_of_work(self, last_proof):
+        # Simple Proof of Work Algorithm:
+        #  - Find a number p' such that hash(pp') contains leading 4 zeroes, where p is the previous p'
+        #  - p is the previous proof, and p' is the new proof
+        #  :param last_proof: <int>
+        #  return: <int>
+        
+        proof = 0
+        while self.valid_proof(last_proof, proof) is False:
+            proof += 1
+
+        return proof
+
+    @staticmethod
+    def valid_proof(last_proof, proof):
+        # Validates the Proof: Does hash(last_proof, proof) contain 4 leading zeroes?
+        # :param last_proof: <int> Previous Proof
+        # :param proof: <int> Current Proof
+        #:return: <bool> True if correct, False if not.
+        
+        guess = f'{last_proof}{proof}'.encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash[:4] == "0000"
+
+
+
+
+
