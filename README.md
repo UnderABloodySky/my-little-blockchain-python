@@ -35,3 +35,5 @@ If you want to see the incremental growth of this project, the order of the bran
 	3. new_transaction
 	4. new_block
 	5. proof_of_work
+    6. api
+    7. nodes 
