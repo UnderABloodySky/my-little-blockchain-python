@@ -84,17 +84,9 @@ def full_chain():
 # Before we can implement a Consensus Algorithm, we need a way to let a node know about neighbouring nodes on the network. 
 # Each node on our network should keep a registry of other nodes on the network. 
 # Thus, we’ll need some more endpoints:
-
-We’ll need to modify our Blockchain’s constructor and provide a method for registering nodes:
-
 #   - /nodes/register - to accept a list of new nodes in the form of URLs.
 #   - /nodes/resolve - to implement our Consensus Algorithm,
 #                      which resolves any conflicts—to ensure a node has the correct chain.
-
-
-We’ll need to modify our Blockchain’s constructor and provide a method for registering nodes:
-
-
 
 
 
