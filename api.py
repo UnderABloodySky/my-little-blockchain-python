@@ -10,7 +10,7 @@
 # Our server will form a single node in our blockchain network. 
 
 from uuid import uuid4
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from blockchain import Blockchain
 
 # Instantiate our Node
@@ -26,12 +26,51 @@ blockchain = Blockchain()
 @app.route('/mine', methods=['GET']) 
 # Create the /mine endpoint, which is a GET request
 def mine():
-    return "We'll mine a new Block"
+    # Our mining endpoint is where the magic happens, and it’s easy. It has to do three things:
+    #   - Calculate the Proof of Work
+    #   - Reward the miner (us) by adding a transaction granting us 1 coin
+    #   - Forge the new Block by adding it to the chain
+    last_block = blockchain.last_block
+    last_proof = last_block['proof']
+    proof = blockchain.proof_of_work(last_proof)
+
+    # We must receive a reward for finding the proof.
+    # The sender is "0" to signify that this node has mined a new coin.
+    blockchain.new_transaction(
+        sender="0",
+        recipient=node_identifier,
+        amount=1,
+    )
+
+    # Forge the new Block by adding it to the chain
+    previous_hash = blockchain.hash(last_block)
+    block = blockchain.new_block(proof, previous_hash)
+
+    response = {
+        'message': "New Block Forged",
+        'index': block['index'],
+        'transactions': block['transactions'],
+        'proof': block['proof'],
+        'previous_hash': block['previous_hash'],
+    }
+    #Note that the recipient of the mined block is the address of our node. 
+    #And most of what we’ve done here is just interact with the methods on our Blockchain class. 
+    #At this point, we’re done, and can start interacting with our blockchain.
+    return jsonify(response), 200
   
 @app.route('/transactions/new', methods=['POST']) 
 #Create the /transactions/new endpoint, which is a POST request, since we’ll be sending data to it
 def new_transaction():
-    return "We'll add a new transaction"
+    #Obtain data request
+    values = request.get_json()
+    # Check that the required fields are in the POST'ed data
+    required = ['sender', 'recipient', 'amount']
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+    # Create a new Transaction
+    index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
+    response = {'message': f'Transaction will be added to Block {index}'}
+    return jsonify(response), 201
 
 @app.route('/chain', methods=['GET'])
 #Create the /chain endpoint, which returns the full Blockchain
