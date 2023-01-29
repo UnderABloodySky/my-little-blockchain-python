@@ -2,6 +2,7 @@ import hashlib
 import json
 from time import time
 import requests
+from urllib.parse import urlparse
 
 # Our Blockchain class is responsible for managing the chain. 
 # It will store transactions and have some helper methods for adding new blocks to the chain. 

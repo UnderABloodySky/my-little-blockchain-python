@@ -81,14 +81,55 @@ def full_chain():
     }
     return jsonify(response), 200
 
-# Before we can implement a Consensus Algorithm, we need a way to let a node know about neighbouring nodes on the network. 
+# Before we can implement a Consensus Algorithm, we need a way 
+# to let a node know about neighbouring nodes on the network. 
 # Each node on our network should keep a registry of other nodes on the network. 
 # Thus, we’ll need some more endpoints:
 #   - /nodes/register - to accept a list of new nodes in the form of URLs.
 #   - /nodes/resolve - to implement our Consensus Algorithm,
 #                      which resolves any conflicts—to ensure a node has the correct chain.
+# Let’s register the two endpoints to our API, 
+# one for adding neighbouring nodes and the another for resolving conflicts:
+# At this point you can grab a different machine if you like, and spin up different nodes on your network. 
+# Or spin up processes using different ports on the same machine. I spun up another node on my machine, 
+# on a different port, and registered it with my current node. Thus, I have two nodes:
+#   -   http://localhost:5000
+#   -   http://localhost:5001
+
+@app.route('/nodes/register', methods=['POST'])
+def register_nodes():
+    values = request.get_json()
+
+    nodes = values.get('nodes')
+    if nodes is None:
+        return "Error: Please supply a valid list of nodes", 400
+
+    for node in nodes:
+        blockchain.register_node(node)
+
+    response = {
+        'message': 'New nodes have been added',
+        'total_nodes': list(blockchain.nodes),
+    }
+    return jsonify(response), 201
 
 
+@app.route('/nodes/resolve', methods=['GET'])
+def consensus():
+    replaced = blockchain.resolve_conflicts()
+
+    if replaced:
+        response = {
+            'message': 'Our chain was replaced',
+            'new_chain': blockchain.chain
+        }
+    else:
+        response = {
+            'message': 'Our chain is authoritative',
+            'chain': blockchain.chain
+        }
+
+    return jsonify(response), 200
 
 # Runs the server on port 5000
 if __name__ == '__main__':
