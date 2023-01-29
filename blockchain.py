@@ -155,6 +155,9 @@ class Blockchain(object):
         return guess_hash[:4] == "0000"
 
 
-
-
+    # We’ve got a basic Blockchain that accepts transactions and allows us to mine new Blocks. 
+    # But the whole point of Blockchains is that they should be decentralized. 
+    # And if they’re decentralized, how on earth do we ensure that they all reflect the same chain? 
+    # This is called the problem of Consensus, and we’ll have to implement a Consensus Algorithm 
+    # if we want more than one node in our network.
 
