@@ -9,6 +9,7 @@ class Blockchain(object):
         self.chain = []
         self.current_transactions = []
         # Create the genesis block
+        self.nodes = set()
         self.new_block(previous_hash=1, proof=100)
         
     def new_block(self):
@@ -160,4 +161,14 @@ class Blockchain(object):
     # And if they’re decentralized, how on earth do we ensure that they all reflect the same chain? 
     # This is called the problem of Consensus, and we’ll have to implement a Consensus Algorithm 
     # if we want more than one node in our network.
-
+    # Before we can implement a Consensus Algorithm, we need a way to let a node know about neighbouring nodes on the network. 
+    # Each node on our network should keep a registry of other nodes on the network. 
+    # We’ll need to modify our Blockchain’s constructor and provide a method for registering nodes:
+    
+    def register_node(self, address):
+        # Add a new node to the list of nodes
+        #   :param address: <str> Address of node. Eg. 'http://192.168.0.5:5000'
+        #   :return: None
+        
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
